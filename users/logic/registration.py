@@ -10,7 +10,7 @@ class RegistrationManager:
     def register(self, user):
         user.password = hasher.make_password(user.password)
 
-        #TODO: организовать создание дефолтных настроек профиля (скорее всего надо указать дефолты в моделях) и настроек
+        #TODO: организовать создание дефолтных значений в полях профиля (скорее всего надо указать дефолты в моделях) и дефолтных настроек
         # и сопоставление их с регистрируемым пользователем
         #profile = UserProfile().save()
         #settings = UserSettings().save()
