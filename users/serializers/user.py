@@ -1,12 +1,16 @@
 from rest_framework import serializers
+from rest_framework.serializers import ValidationError
 
-from models.user import CustomUser
+from ..models.user import CustomUser
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserRegisterSerializer(serializers.ModelSerializer):
+    password_retry = serializers.CharField()
+
     class Meta:
         model = CustomUser
-        exclude = ['profile', 'settings']
+        fields = ['username', 'password', 'email']
 
-    def create(self, validated_data):
-        return CustomUser(**validated_data)
+    def validate_password_retry(self):
+        if self.data['password'] != self.password_retry:
+            raise ValidationError("Passwords do not match")
