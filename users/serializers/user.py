@@ -9,8 +9,8 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'password', 'email']
+        fields = ['username', 'password', 'email', 'password_retry']
 
-    def validate_password_retry(self):
-        if self.data['password'] != self.password_retry:
+    def validate_password_retry(self, password_retry):
+        if self.initial_data['password'] != password_retry:
             raise ValidationError("Passwords do not match")

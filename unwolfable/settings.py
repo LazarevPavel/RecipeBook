@@ -81,8 +81,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'unwolfable_db',
-        'USER': 'user',
-        'PASSWORD': 'password',
+        'USER': 'wolf',
+        'PASSWORD': 'KymKym98',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

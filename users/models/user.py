@@ -21,8 +21,6 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, username, email, password, profile=None, settings=None):
         """ Создает и возввращет пользователя с привилегиями суперадмина """
-        if password is None:
-            raise TypeError('Superusers must have a password.')
 
         user = self.create_user(username=username,
                                 email=email,
