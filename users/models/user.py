@@ -1,7 +1,12 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.db import models
 import django.contrib.auth.hashers as hasher
 
+import jwt
+from datetime import datetime, timedelta
+
+
+from rest_framework.settings import api_settings
 from .user_profile import UserProfile
 from .user_settings import UserSettings
 
@@ -34,7 +39,7 @@ class UserManager(BaseUserManager):
 
 
 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractUser, PermissionsMixin):
     """ Пользователь """
 
     username = models.CharField(max_length=50, unique=True, null=False)
@@ -51,3 +56,17 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    @property
+    def token(self):
+        return self._generate_jwt_token()
+
+    def _generate_jwt_token(self, days_to_expire=1):
+        dt = datetime.now() + timedelta(days=days_to_expire)
+
+        token = jwt.encode(
+            {'id': self.pk, 'exp': int(dt.strftime('%S'))},
+            api_settings.SECRET_KEY,
+            algorithm='HS256')
+
+        return token.decode('utf-8')
