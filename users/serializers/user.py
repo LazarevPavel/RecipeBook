@@ -4,13 +4,25 @@ from rest_framework.serializers import ValidationError
 from ..models.user import CustomUser
 
 
-class UserRegisterSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
+    """Сериализатор пользователя"""
+
     password = serializers.CharField(max_length=128, min_length=8, write_only=True)
-    token = serializers.CharField(max_length=255, read_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ['username', 'password', 'email', 'token']
+        fields = ['id', 'username', 'password']
+        read_only_fields = ['id']
+
+
+class UserRegisterSerializer(serializers.ModelSerializer):
+    """Сериализатор пользователя для регистрации"""
+
+    password = serializers.CharField(max_length=128, min_length=8, write_only=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'password', 'email']
 
     def create(self):
         return CustomUser(**self.validated_data)
